@@ -1,0 +1,26 @@
+.userListWrapper {
+  position: relative;
+  padding: 0 10px;
+
+  ul {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 250px;
+    min-height: 300px;
+    padding: 10px;
+    margin: 2px;
+    background-color: #ac00ac;
+
+    li {
+      width: 100%;
+      padding: 3px 13px;
+      font-size: 28px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #ee00ee;
+      }
+    }
+  }
+}

@@ -6,12 +6,12 @@ import { Avatar } from '../Avatar/Avatar';
 import styles from './UserList.module.scss';
 
 const sortUsersByDate = (users) => {
-  return users.sort((user1, user2) => {
-    return new Date(user1.registered.date) - new Date(user2.registered.date);
+  return [...users].sort((user1, user2) => {
+    return new Date(user1.registered?.date) - new Date(user2.registered?.date);
   });
 };
 
-export const UserList = () => {
+export const UserList = ({ dataTestId = 'users' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { getUsers, getCurrentUser } = useGetters();
   const { setCurrentUser } = useSetters();
@@ -25,12 +25,16 @@ export const UserList = () => {
   if (!areUsersFetched) return;
 
   return (
-    <div className={styles.userListWrapper}>
+    <div className={styles.userListWrapper} data-testid={dataTestId}>
       <Avatar img={currentUser.picture.medium} alt='Current user' onClick={toggleIsOpen} />
       {isOpen ? (
-        <ul>
+        <ul data-testid={`${dataTestId}-list`}>
           {sortedUsers.map((user, idx) => (
-            <li onClick={() => setCurrentUser(user)} key={`userList-element-${idx}`}>
+            <li
+              onClick={() => setCurrentUser(user)}
+              data-testid={`${dataTestId}-list-element`}
+              key={`userList-element-${idx}`}
+            >
               {user.name.first}
             </li>
           ))}

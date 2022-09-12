@@ -105,7 +105,7 @@ describe('Test UserList component', () => {
     const avatarElement = screen.getByTestId('avatar');
 
     openUserList();
-    const secondUserElement = screen.queryAllByTestId('users-list-element')[0];
+    const secondUserElement = screen.getByText(secondUser.name.first);
     fireEvent.click(secondUserElement);
 
     expect(avatarElement).toHaveAttribute('src', secondUser.picture.medium);

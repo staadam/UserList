@@ -1,10 +1,11 @@
-import { UsersProvider } from './utils/store/store';
+import { Provider } from 'react-redux';
+import { store } from './utils/store/store';
 import { UserDetailsPage } from './pages/UserDetailsPage';
 
 export const App = () => {
   return (
-    <UsersProvider>
+    <Provider store={store}>
       <UserDetailsPage />
-    </UsersProvider>
+    </Provider>
   );
 };

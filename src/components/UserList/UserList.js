@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useGetters } from '../../utils/store/hooks/useGetters';
-import { useSetters } from '../../utils/store/hooks/useSetters';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrentUser } from '../../utils/store/features/userSlice';
 import { Avatar } from '../Avatar/Avatar';
 
 import styles from './UserList.module.scss';
@@ -13,12 +13,14 @@ const sortUsersByDate = (users) => {
 
 export const UserList = ({ dataTestId = 'users' }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { getUsers, getCurrentUser } = useGetters();
-  const { setCurrentUser } = useSetters();
+  const dispatch = useDispatch();
+  const { users, currentUser } = useSelector(({ users: { users, currentUser } }) => ({
+    users,
+    currentUser,
+  }));
+  const areUsersFetched = users.length > 0;
 
-  const sortedUsers = sortUsersByDate(getUsers());
-  const currentUser = getCurrentUser();
-  const areUsersFetched = sortedUsers.length > 0;
+  const sortedUsers = sortUsersByDate(users);
 
   const toggleIsOpen = () => setIsOpen((prevState) => !prevState);
 
@@ -31,7 +33,7 @@ export const UserList = ({ dataTestId = 'users' }) => {
         <ul data-testid={`${dataTestId}-list`}>
           {sortedUsers.map((user, idx) => (
             <li
-              onClick={() => setCurrentUser(user)}
+              onClick={() => dispatch(setCurrentUser(user))}
               data-testid={`${dataTestId}-list-element`}
               key={`userList-element-${idx}`}
             >

@@ -1,19 +1,21 @@
 import { useEffect } from 'react';
-import { useGetters } from '../utils/store/hooks/useGetters';
-import { useSetters } from '../utils/store/hooks/useSetters';
 import { fetchUsers } from '../utils/helpers/fetchUsers';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUsers, setError } from '../utils/store/features/userSlice';
 
 import { NavBar } from '../components/NavBar/NavBar';
 import { ErrorMessage } from '../components/ErrorMessage/ErrorMessage';
 import { UserDetailsTable } from '../components/UserDetailsTable/UserDetailsTable';
 
 export const UserDetailsPage = () => {
-  const { setUsers, setError } = useSetters();
-  const { getErrorMessage } = useGetters();
-  const error = getErrorMessage();
+  const error = useSelector(({ users }) => users.error);
+  const dispatch = useDispatch();
+
+  const handleSetError = (error) => dispatch(setError(error));
+  const handleSetUsers = (users) => dispatch(setUsers(users));
 
   useEffect(() => {
-    fetchUsers(setUsers, setError);
+    fetchUsers(handleSetUsers, handleSetError);
   }, []);
 
   return (

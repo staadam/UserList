@@ -1,10 +1,10 @@
-import { useGetters } from '../../utils/store/hooks/useGetters';
+import { useSelector } from 'react-redux';
 import { flatNestedObject } from '../../utils/helpers/flatNestedObject';
 import { Table } from '../Table/Table';
 
 export const UserDetailsTable = () => {
-  const { getCurrentUser } = useGetters();
-  const flatUserData = flatNestedObject(getCurrentUser());
+  const currentUser = useSelector(({ users }) => users.currentUser);
+  const flatUserData = flatNestedObject(currentUser);
 
   return <Table dataToShow={flatUserData} keyName={'user-data-table'} />;
 };

@@ -1,7 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { useEffect } from 'react';
-import { useSetters } from '../../utils/store/hooks/useSetters';
-import { UsersProvider } from '../../utils/store/store';
+import { Provider, useDispatch } from 'react-redux';
+import { store } from '../../utils/store/store';
+import { setUsers } from '../../utils/store/features/userSlice';
 import { UserList } from '../../components/UserList/UserList';
 
 describe('Test UserList component', () => {
@@ -40,19 +41,19 @@ describe('Test UserList component', () => {
   };
 
   const RenderWithMockedUsers = ({ children }) => {
-    const { setUsers } = useSetters();
+    const dispatch = useDispatch();
     useEffect(() => {
-      setUsers(mockedUsers);
+      dispatch(setUsers(mockedUsers));
     }, []);
     return <>{children}</>;
   };
 
   const UserListWithData = () => (
-    <UsersProvider>
+    <Provider store={store}>
       <RenderWithMockedUsers>
         <UserList />
       </RenderWithMockedUsers>
-    </UsersProvider>
+    </Provider>
   );
 
   test('UserList renders Avatar', () => {

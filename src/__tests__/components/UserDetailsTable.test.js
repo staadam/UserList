@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { useEffect } from 'react';
-import { useSetters } from '../../utils/store/hooks/useSetters';
-import { UsersProvider } from '../../utils/store/store';
+import { Provider, useDispatch } from 'react-redux';
+import { store } from '../../utils/store/store';
+import { setCurrentUser } from '../../utils/store/features/userSlice';
 import { UserDetailsTable } from '../../components/UserDetailsTable/UserDetailsTable';
 
 describe('Test UserDetailsTable component', () => {
@@ -13,20 +14,20 @@ describe('Test UserDetailsTable component', () => {
   };
 
   const RenderWithMockedCurrentUser = ({ children }) => {
-    const { setCurrentUser } = useSetters();
+    const dispatch = useDispatch();
     useEffect(() => {
-      setCurrentUser(mockedUser);
+      dispatch(setCurrentUser(mockedUser));
     }, []);
     return <>{children}</>;
   };
 
   test('Table renders records with nested object', () => {
     render(
-      <UsersProvider>
+      <Provider store={store}>
         <RenderWithMockedCurrentUser>
           <UserDetailsTable />
         </RenderWithMockedCurrentUser>
-      </UsersProvider>
+      </Provider>
     );
 
     const tableElement = screen.getByTestId('table');

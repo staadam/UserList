@@ -13,18 +13,16 @@ const sortUsersByDate = (users) => {
 
 export const UserList = ({ dataTestId = 'users' }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { users, currentUser } = useSelector(({ users }) => users);
   const dispatch = useDispatch();
-  const { users, currentUser } = useSelector(({ users: { users, currentUser } }) => ({
-    users,
-    currentUser,
-  }));
+
   const areUsersFetched = users.length > 0;
+  if (!areUsersFetched) return;
 
   const sortedUsers = sortUsersByDate(users);
 
   const toggleIsOpen = () => setIsOpen((prevState) => !prevState);
-
-  if (!areUsersFetched) return;
+  const handleOnClick = (user) => () => dispatch(setCurrentUser(user));
 
   return (
     <div className={styles.userListWrapper} data-testid={dataTestId}>
@@ -33,7 +31,7 @@ export const UserList = ({ dataTestId = 'users' }) => {
         <ul data-testid={`${dataTestId}-list`}>
           {sortedUsers.map((user, idx) => (
             <li
-              onClick={() => dispatch(setCurrentUser(user))}
+              onClick={handleOnClick(user)}
               data-testid={`${dataTestId}-list-element`}
               key={`userList-element-${idx}`}
             >
